@@ -29,55 +29,78 @@
  #include "Keyboard.h" 
  
 // constants won't change. They're used here to set pin numbers:
-const int buttonPin = A1;   // the number of the pushbutton pin
+const int buttonPin1 = A1;   // the number of the pushbutton pin
+const int buttonPin2 = A2;
+const int buttonPin3 = A3;
  
 // Variables will change:
-int ledState = HIGH;         // the current state of the output pin
-int buttonState;             // the current reading from the input pin
-int lastButtonState = HIGH;  // the previous reading from the input pin
+int buttonState1;
+int buttonState2;
+int buttonState3;
+
+// the current reading1 from the input pin
+int lastButtonState1 = HIGH;  // the previous reading1 from the input pin
+int lastButtonState2 = HIGH;
+int lastButtonState3 = HIGH;
  
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
-unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long lastDebounceTime1 = 0;  // the last time the output pin was toggled
+unsigned long lastDebounceTime2 = 0;
+unsigned long lastDebounceTime3 = 0;
 unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
  
 void setup() {
-  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(buttonPin1, INPUT_PULLUP);
+  pinMode(buttonPin1, INPUT_PULLUP);
+  pinMode(buttonPin2, INPUT_PULLUP);
   Keyboard.begin();
 }
  
 void loop() {
   // read the state of the switch into a local variable:
-  int reading = digitalRead(buttonPin);
+  int reading1 = digitalRead(buttonPin1);
+  int reading2 = digitalRead(buttonPin2);
+  int reading3 = digitalRead(buttonPin3);
  
   // check to see if you just pressed the button
   // (i.e. the input went from LOW to HIGH), and you've waited long enough
   // since the last press to ignore any noise:
  
   // If the switch changed, due to noise or pressing:
-  if (reading != lastButtonState) {
+  if (reading1 != lastButtonState1) {
     // reset the debouncing timer
-    lastDebounceTime = millis();
+    lastDebounceTime1 = millis();
+  }
+  
+  if (reading2 != lastButtonState2) {
+    // reset the debouncing timer
+    lastDebounceTime2 = millis();
+  }
+  
+  if (reading3 != lastButtonState3) {
+    // reset the debouncing timer
+    lastDebounceTime3 = millis();
   }
  
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    // whatever the reading is at, it's been there for longer than the debounce
+ 
+  if ((millis() - lastDebounceTime1) > debounceDelay) {
+    // whatever the reading1 is at, it's been there for longer than the debounce
     // delay, so take it as the actual current state:
  
     // if the button state has changed:
-    if (reading != buttonState) {
-      buttonState = reading;
+    if (reading1 != buttonState1) {
+      buttonState1 = reading1;
  
       // only toggle the LED if the new button state is HIGH
-      if (buttonState == HIGH) {
-        ledState = !ledState;
-        Serial.println("ON");
+      if (buttonState1 == HIGH) {
+        Serial.println("Button 1 ON");
         Keyboard.press(KEY_LEFT_SHIFT);
         Keyboard.write(KEY_F2);
         Keyboard.release(KEY_LEFT_SHIFT);
       }
       else {
-        Serial.println("off");
+        Serial.println("Button 1 off");
         Keyboard.press(KEY_LEFT_SHIFT);
         Keyboard.write(KEY_F3);
         Keyboard.release(KEY_LEFT_SHIFT);
@@ -85,8 +108,60 @@ void loop() {
       }
     }
   }
+  
+  if ((millis() - lastDebounceTime2) > debounceDelay) {
+    // whatever the reading1 is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+ 
+    // if the button state has changed:
+    if (reading2 != buttonState2) {
+      buttonState2 = reading2;
+ 
+      // only toggle the LED if the new button state is HIGH
+      if (buttonState2 == HIGH) {
+        Serial.println("Button 2 ON");
+      //   Keyboard.press(KEY_LEFT_SHIFT);
+      //   Keyboard.write(KEY_F2);
+      //   Keyboard.release(KEY_LEFT_SHIFT);
+      }
+      else {
+        Serial.println("Button 2 off");
+        // Keyboard.press(KEY_LEFT_SHIFT);
+        // Keyboard.write(KEY_F3);
+        // Keyboard.release(KEY_LEFT_SHIFT);
+        
+      }
+    }
+  }
+  
+  if ((millis() - lastDebounceTime3) > debounceDelay) {
+    // whatever the reading1 is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+ 
+    // if the button state has changed:
+    if (reading3 != buttonState3) {
+      buttonState3 = reading3;
+ 
+      // only toggle the LED if the new button state is HIGH
+      if (buttonState3 == HIGH) {
+        Serial.println("Button 3 ON");
+        Keyboard.press(KEY_LEFT_SHIFT);
+        Keyboard.write(KEY_F5);
+        Keyboard.release(KEY_LEFT_SHIFT);
+      }
+      else {
+        Serial.println("Button 3 off");
+        Keyboard.press(KEY_LEFT_SHIFT);
+        Keyboard.write(KEY_F5);
+        Keyboard.release(KEY_LEFT_SHIFT);
+        
+      }
+    }
+  }
  
  
-  // save the reading. Next time through the loop, it'll be the lastButtonState:
-  lastButtonState = reading;
+  // save the reading1. Next time through the loop, it'll be the lastButtonState:
+  lastButtonState1 = reading1;
+  lastButtonState2 = reading2;
+  lastButtonState3 = reading3;
 }
